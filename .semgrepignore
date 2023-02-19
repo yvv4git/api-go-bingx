@@ -1,0 +1,42 @@
+# Ignore git items
+.gitignore
+.git/
+:include .gitignore
+
+# Common large directories
+node_modules/
+build/
+dist/
+vendor/
+env/
+.env/
+venv/
+.venv/
+*.min.js
+
+# Common test directories
+test/
+tests/
+env_test
+perf_tests/
+
+# Semgrep rules folder
+.semgrep
+
+# Local
+docker-compose.yml
+docker-compose-itest.yml
+docker-compose-perf-test.yml 
+compose-test.yml
+
+# Project tests
+recreate_test_db.py
+
+# Unable to ignore with nosemgrep, figure out why
+emails/*
+slack_notifier/*
+savings/admin.py
+savings/utils.py
+
+# Unskippable hadolint
+Dockerfile
