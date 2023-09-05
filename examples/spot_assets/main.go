@@ -15,6 +15,10 @@ const (
 )
 
 func main() {
+	/*
+		Show my assets.
+		Asserts are a set of characters and their number.
+	*/
 	getEnvOrPanic := func(key string) string {
 		value, ok := os.LookupEnv(key)
 		if !ok {

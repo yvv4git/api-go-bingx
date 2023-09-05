@@ -3,9 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
-	api "github.com/yvv4git/api-go-bingx"
 	"log"
 	"os"
+
+	api "github.com/yvv4git/api-go-bingx"
 )
 
 const (
@@ -15,6 +16,9 @@ const (
 )
 
 func main() {
+	/*
+		Show last trades.
+	*/
 	getEnvOrPanic := func(key string) string {
 		value, ok := os.LookupEnv(key)
 		if !ok {

@@ -15,6 +15,9 @@ const (
 )
 
 func main() {
+	/*
+		Show my balance.
+	*/
 	getEnvOrPanic := func(key string) string {
 		value, ok := os.LookupEnv(key)
 		if !ok {

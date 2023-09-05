@@ -15,6 +15,9 @@ const (
 )
 
 func main() {
+	/*
+		Show the depth of the stack.
+	*/
 	getEnvOrPanic := func(key string) string {
 		value, ok := os.LookupEnv(key)
 		if !ok {
