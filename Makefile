@@ -12,3 +12,6 @@ lint:
 
 sec:
 	semgrep --config=auto .
+
+update_go_ver:
+	go mod edit -go=1.21
