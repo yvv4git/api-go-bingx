@@ -40,18 +40,13 @@ func main() {
 		log.Fatalf("error on process request: %v", err)
 	}
 
-	spotDepthResponse, ok := response.(*api.SpotDepthResponse)
-	if !ok {
-		log.Fatal("error on convert response to SpotAssetsResponse")
-	}
-
-	for _, value := range spotDepthResponse.Data.Bids {
+	for _, value := range response.Data.Bids {
 		log.Printf("Bid: %v - %v", value[0], value[1])
 	}
 
 	log.Println("-----")
 
-	for _, value := range spotDepthResponse.Data.Asks {
+	for _, value := range response.Data.Asks {
 		log.Printf("Ask: %v - %v", value[0], value[1])
 	}
 }

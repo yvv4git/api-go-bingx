@@ -70,9 +70,6 @@ func TestSpotAssetsRequest_Create(t *testing.T) {
 	spotAssetsRequest := api.NewSpotAssetsRequest(apiURL, apiKey(), apiSecret())
 	resp, err := spotAssetsRequest.Process(context.Background())
 	require.NoError(t, err)
-
-	spotAssetsResp, ok := resp.(*api.SpotAssetsResponse)
-	require.True(t, ok)
-	require.Equal(t, "BTC", spotAssetsResp.Data.Balances[0].Asset)
-	require.Equal(t, "0.0000091", spotAssetsResp.Data.Balances[0].Free)
+	require.Equal(t, "BTC", resp.Data.Balances[0].Asset)
+	require.Equal(t, "0.0000091", resp.Data.Balances[0].Free)
 }

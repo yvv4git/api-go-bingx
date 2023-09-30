@@ -41,13 +41,8 @@ func main() {
 		log.Fatalf("error on process request: %v", err)
 	}
 
-	spotDepthResponse, ok := response.(*api.SpotLastTradesResponse)
-	if !ok {
-		log.Fatal("error on convert response to SpotAssetsResponse")
-	}
-
-	fmt.Printf("Code: %#v \n", spotDepthResponse.Code)
-	for _, value := range spotDepthResponse.Data {
+	fmt.Printf("Code: %#v \n", response.Code)
+	for _, value := range response.Data {
 		fmt.Printf(
 			"ID=%v Price=%v Qty=%v BuyerMaker=%v TimeStamp=%v \n",
 			value.ID, value.Price, value.Qty, value.BuyerMaker, value.Time,

@@ -39,10 +39,8 @@ func TestSwapBalanceRequest_Create(t *testing.T) {
 	resp, err := swapBalanceRequest.Process(context.Background())
 	require.NoError(t, err)
 
-	swapBalanceResp, ok := resp.(*api.SwapBalanceResponse)
-	require.True(t, ok)
-	require.Equal(t, 0, swapBalanceResp.Code)
-	require.Equal(t, "USDT", swapBalanceResp.Data.Balance.Asset)
+	require.Equal(t, 0, resp.Code)
+	require.Equal(t, "USDT", resp.Data.Balance.Asset)
 }
 
 func apiKey() string {

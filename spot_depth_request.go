@@ -47,9 +47,17 @@ func NewSpotDepthRequest(apiURL, apiKey, apiSecret string) *SpotDepthRequest {
 }
 
 // Process - used for create.
-func (s *SpotDepthRequest) Process(ctx context.Context) (interface{}, error) {
-	payloadProcessor := NewSpotDepthPayload(utils.CurrentTimestamp(), s.limit, s.symbol, s.apiSecret)
-	payload := payloadProcessor.Create()
+func (s *SpotDepthRequest) Process(ctx context.Context) (*SpotDepthResponse, error) {
+	//payloadProcessor := NewSpotDepthPayload(utils.CurrentTimestamp(), s.limit, s.symbol, s.apiSecret)
+	//payload := payloadProcessor.Create()
+
+	timestamp := utils.CurrentTimestamp()
+	urlData := fmt.Sprintf("symbol=%s&limit=%d&timestamp=%d", s.symbol, s.limit, timestamp)
+
+	payload := fmt.Sprintf(
+		"%s&signature=%s",
+		urlData,
+		utils.Sign(s.apiSecret, urlData))
 	urlPath := fmt.Sprintf("%s%s?%s", s.apiURL, s.apiPath, payload)
 
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, urlPath, nil)

@@ -41,9 +41,10 @@ func NewSpotAssetsRequest(apiURL, apiKey, apiSecret string) *SpotAssetsRequest {
 }
 
 // Process - used for create.
-func (s *SpotAssetsRequest) Process(ctx context.Context) (interface{}, error) {
-	payloadURL := NewSpotAssetsPayload(utils.CurrentTimestamp(), s.apiSecret)
-	payloadStr := payloadURL.Create()
+func (s *SpotAssetsRequest) Process(ctx context.Context) (*SpotAssetsResponse, error) {
+	timestamp := utils.CurrentTimestamp()
+	signature := utils.Sign(s.apiSecret, fmt.Sprintf("timestamp=%d", timestamp))
+	payloadStr := fmt.Sprintf("timestamp=%d&signature=%s", timestamp, signature)
 	urlPath := fmt.Sprintf("%s%s?%s", s.apiURL, s.apiPath, payloadStr)
 
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, urlPath, nil)
