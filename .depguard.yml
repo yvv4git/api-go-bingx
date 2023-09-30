@@ -1,0 +1,22 @@
+{
+  "main": {
+    "files": [
+      "$all",
+      "!$test"
+    ],
+    "allow": [
+      "$all",
+    ],
+    "deny": {
+      "reflect": "Who needs reflection",
+    }
+  },
+  "tests": {
+    "files": [
+      "$test"
+    ],
+    "allow": [
+      "$all",
+    ],
+  }
+}
