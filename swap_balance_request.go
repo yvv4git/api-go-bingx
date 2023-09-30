@@ -40,8 +40,9 @@ func NewSwapBalanceRequest(apiURL, apiKey, apiSecret string) *SwapBalanceRequest
 
 // Process - used for create.
 func (s *SwapBalanceRequest) Process(ctx context.Context) (*SwapBalanceResponse, error) {
-	payloadURL := NewSwapBalancePayload(utils.CurrentTimestamp(), s.apiSecret)
-	payloadStr := payloadURL.Create()
+	timestamp := utils.CurrentTimestamp()
+	signature := utils.Sign(s.apiSecret, fmt.Sprintf("timestamp=%d", timestamp))
+	payloadStr := fmt.Sprintf("timestamp=%d&signature=%s", timestamp, signature)
 	urlPath := fmt.Sprintf("%s%s?%s", s.apiURL, s.apiPath, payloadStr)
 
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, urlPath, nil)
