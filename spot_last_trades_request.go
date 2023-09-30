@@ -84,7 +84,7 @@ func (s *SpotLastTradesRequest) SetLimit(limit int) {
 }
 
 // Process - used for processing request.
-func (s *SpotLastTradesRequest) Process(ctx context.Context) (interface{}, error) {
+func (s *SpotLastTradesRequest) Process(ctx context.Context) (*SpotLastTradesResponse, error) {
 	payloadStr := s.PreparePayload(utils.CurrentTimestamp(), s.symbol, s.limit)
 	urlPath := fmt.Sprintf("%s%s?%s", s.apiURL, s.apiPath, payloadStr)
 

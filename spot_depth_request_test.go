@@ -106,8 +106,6 @@ func TestSpotDepthRequest_Create(t *testing.T) {
 	resp, err := spotDepthRequest.Process(context.Background())
 	require.NoError(t, err)
 
-	spotDepthResp, ok := resp.(*api.SpotDepthResponse)
-	require.True(t, ok)
-	require.Equal(t, 9, len(spotDepthResp.Data.Asks))
-	require.Equal(t, 9, len(spotDepthResp.Data.Bids))
+	require.Equal(t, 9, len(resp.Data.Asks))
+	require.Equal(t, 9, len(resp.Data.Bids))
 }

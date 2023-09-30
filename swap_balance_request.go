@@ -39,7 +39,7 @@ func NewSwapBalanceRequest(apiURL, apiKey, apiSecret string) *SwapBalanceRequest
 }
 
 // Process - used for create.
-func (s *SwapBalanceRequest) Process(ctx context.Context) (interface{}, error) {
+func (s *SwapBalanceRequest) Process(ctx context.Context) (*SwapBalanceResponse, error) {
 	payloadURL := NewSwapBalancePayload(utils.CurrentTimestamp(), s.apiSecret)
 	payloadStr := payloadURL.Create()
 	urlPath := fmt.Sprintf("%s%s?%s", s.apiURL, s.apiPath, payloadStr)

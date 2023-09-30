@@ -32,15 +32,10 @@ func main() {
 	apiSecret := getEnvOrPanic(envSecret)
 
 	swapBalanceRequest := api.NewSwapBalanceRequest(apiURL, apiKey, apiSecret)
-	response, err := swapBalanceRequest.Process(context.Background())
+	resp, err := swapBalanceRequest.Process(context.Background())
 	if err != nil {
 		log.Fatalf("error on process request: %v", err)
 	}
 
-	swapBalanceResponse, ok := response.(*api.SwapBalanceResponse)
-	if !ok {
-		log.Fatal("error on convert response to SwapBalanceResponse")
-	}
-	log.Printf("ok: %v", ok)
-	log.Printf("%#v", swapBalanceResponse)
+	log.Printf("%#v", resp)
 }

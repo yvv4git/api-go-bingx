@@ -38,12 +38,7 @@ func main() {
 		log.Fatalf("error on process request: %v", err)
 	}
 
-	spotAssetsResponse, ok := response.(*api.SpotAssetsResponse)
-	if !ok {
-		log.Fatal("error on convert response to SpotAssetsResponse")
-	}
-
-	for _, balance := range spotAssetsResponse.Data.Balances {
+	for _, balance := range response.Data.Balances {
 		log.Printf("[%s] %v", balance.Asset, balance.Free)
 	}
 }

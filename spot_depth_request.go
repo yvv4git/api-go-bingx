@@ -47,7 +47,7 @@ func NewSpotDepthRequest(apiURL, apiKey, apiSecret string) *SpotDepthRequest {
 }
 
 // Process - used for create.
-func (s *SpotDepthRequest) Process(ctx context.Context) (interface{}, error) {
+func (s *SpotDepthRequest) Process(ctx context.Context) (*SpotDepthResponse, error) {
 	payloadProcessor := NewSpotDepthPayload(utils.CurrentTimestamp(), s.limit, s.symbol, s.apiSecret)
 	payload := payloadProcessor.Create()
 	urlPath := fmt.Sprintf("%s%s?%s", s.apiURL, s.apiPath, payload)

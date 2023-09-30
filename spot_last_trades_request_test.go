@@ -139,7 +139,5 @@ func TestSpotLastTradesRequest_Process(t *testing.T) {
 	resp, err := spotLastTradesRequest.Process(context.Background())
 	require.NoError(t, err)
 
-	spotLastTradesResp, ok := resp.(*api.SpotLastTradesResponse)
-	require.True(t, ok)
-	require.Equal(t, 10, len(spotLastTradesResp.Data))
+	require.Equal(t, 10, len(resp.Data))
 }

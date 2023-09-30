@@ -41,7 +41,7 @@ func NewSpotAssetsRequest(apiURL, apiKey, apiSecret string) *SpotAssetsRequest {
 }
 
 // Process - used for create.
-func (s *SpotAssetsRequest) Process(ctx context.Context) (interface{}, error) {
+func (s *SpotAssetsRequest) Process(ctx context.Context) (*SpotAssetsResponse, error) {
 	payloadURL := NewSpotAssetsPayload(utils.CurrentTimestamp(), s.apiSecret)
 	payloadStr := payloadURL.Create()
 	urlPath := fmt.Sprintf("%s%s?%s", s.apiURL, s.apiPath, payloadStr)
