@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	api "github.com/yvv4git/api-go-bingx"
+	api "github.com/yvv4git/api-go-bingx/v1"
 )
 
 const (
@@ -16,7 +16,8 @@ const (
 
 func main() {
 	/*
-		Show the depth of the stack.
+		Show my assets.
+		Asserts are a set of characters and their number.
 	*/
 	getEnvOrPanic := func(key string) string {
 		value, ok := os.LookupEnv(key)
@@ -31,22 +32,13 @@ func main() {
 	apiKey := getEnvOrPanic(envKey)
 	apiSecret := getEnvOrPanic(envSecret)
 
-	spotDepthRequest := api.NewSpotDepthRequest(apiURL, apiKey, apiSecret)
-	spotDepthRequest.SetSymbol("BTC-USDT")
-	spotDepthRequest.SetLimit(10)
-
-	response, err := spotDepthRequest.Process(context.Background())
+	spotAssetsRequest := api.NewSpotAssetsRequest(apiURL, apiKey, apiSecret)
+	response, err := spotAssetsRequest.Process(context.Background())
 	if err != nil {
 		log.Fatalf("error on process request: %v", err)
 	}
 
-	for _, value := range response.Data.Bids {
-		log.Printf("Bid: %v - %v", value[0], value[1])
-	}
-
-	log.Println("-----")
-
-	for _, value := range response.Data.Asks {
-		log.Printf("Ask: %v - %v", value[0], value[1])
+	for _, balance := range response.Data.Balances {
+		log.Printf("[%s] %v", balance.Asset, balance.Free)
 	}
 }

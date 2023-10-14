@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	api "github.com/yvv4git/api-go-bingx"
+	api "github.com/yvv4git/api-go-bingx/v1"
 )
 
 const (

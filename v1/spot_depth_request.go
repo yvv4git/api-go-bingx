@@ -1,4 +1,4 @@
-package bingx
+package v1
 
 import (
 	"bytes"
@@ -22,6 +22,15 @@ type SpotDepthRequest struct {
 	userAgent     string
 	symbol        string
 	limit         int
+}
+
+// SpotDepthResponse - used as message from api.
+type SpotDepthResponse struct {
+	Code int `json:"code"`
+	Data struct {
+		Bids [][]string `json:"bids"`
+		Asks [][]string `json:"asks"`
+	} `json:"data"`
 }
 
 // NewSpotDepthRequest - used for create instance of SpotDepthRequest.
@@ -48,9 +57,6 @@ func NewSpotDepthRequest(apiURL, apiKey, apiSecret string) *SpotDepthRequest {
 
 // Process - used for create.
 func (s *SpotDepthRequest) Process(ctx context.Context) (*SpotDepthResponse, error) {
-	//payloadProcessor := NewSpotDepthPayload(utils.CurrentTimestamp(), s.limit, s.symbol, s.apiSecret)
-	//payload := payloadProcessor.Create()
-
 	timestamp := utils.CurrentTimestamp()
 	urlData := fmt.Sprintf("symbol=%s&limit=%d&timestamp=%d", s.symbol, s.limit, timestamp)
 
@@ -115,13 +121,4 @@ func (s *SpotDepthRequest) SetLimit(limit int) *SpotDepthRequest {
 	s.limit = limit
 
 	return s
-}
-
-// SpotDepthResponse - used as message from api.
-type SpotDepthResponse struct {
-	Code int `json:"code"`
-	Data struct {
-		Bids [][]string `json:"bids"`
-		Asks [][]string `json:"asks"`
-	} `json:"data"`
 }

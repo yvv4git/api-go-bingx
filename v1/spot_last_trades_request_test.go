@@ -1,4 +1,4 @@
-package bingx_test
+package v1_test
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	api "github.com/yvv4git/api-go-bingx"
+	api "github.com/yvv4git/api-go-bingx/v1"
 	mock "gopkg.in/h2non/gock.v1"
 )
 
