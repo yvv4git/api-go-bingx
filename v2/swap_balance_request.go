@@ -1,4 +1,4 @@
-package bingx
+package v2
 
 import (
 	"bytes"
@@ -12,8 +12,8 @@ import (
 	"github.com/yvv4git/api-go-bingx/utils"
 )
 
-// SpotAssetsRequest - specific implementation of common contract.
-type SpotAssetsRequest struct {
+// SwapBalanceRequest - specific implementation of common contract.
+type SwapBalanceRequest struct {
 	apiURL        string
 	apiPath       string
 	apiKey        string
@@ -22,26 +22,24 @@ type SpotAssetsRequest struct {
 	userAgent     string
 }
 
-// NewSpotAssetsRequest - used for create instance of SpotAssetsRequest.
-func NewSpotAssetsRequest(apiURL, apiKey, apiSecret string) *SpotAssetsRequest {
+// NewSwapBalanceRequest - used for create instance of SwapBalanceRequest.
+func NewSwapBalanceRequest(apiURL, apiKey, apiSecret string) *SwapBalanceRequest {
 	const (
-		defaultPath          = "/openApi/spot/v1/account/balance"
-		defaultClientHTTP    = "Mozilla/5.0"
 		defaultClientTimeout = time.Second * 2
 	)
 
-	return &SpotAssetsRequest{
+	return &SwapBalanceRequest{
 		apiURL:        apiURL,
-		apiPath:       defaultPath,
+		apiPath:       "/openApi/swap/v2/user/balance",
 		apiKey:        apiKey,
 		apiSecret:     apiSecret,
 		clientTimeout: defaultClientTimeout,
-		userAgent:     defaultClientHTTP,
+		userAgent:     "Mozilla/5.0",
 	}
 }
 
 // Process - used for create.
-func (s *SpotAssetsRequest) Process(ctx context.Context) (*SpotAssetsResponse, error) {
+func (s *SwapBalanceRequest) Process(ctx context.Context) (*SwapBalanceResponse, error) {
 	timestamp := utils.CurrentTimestamp()
 	signature := utils.Sign(s.apiSecret, fmt.Sprintf("timestamp=%d", timestamp))
 	payloadStr := fmt.Sprintf("timestamp=%d&signature=%s", timestamp, signature)
@@ -53,10 +51,8 @@ func (s *SpotAssetsRequest) Process(ctx context.Context) (*SpotAssetsResponse, e
 	}
 
 	request.Header = http.Header{
-		"X-Bx-Apikey":  []string{s.apiKey},
-		"User-Agent":   []string{s.userAgent},
-		"Content-Type": []string{"application/json"},
-		"Accept":       []string{"Accept"},
+		"X-Bx-Apikey": []string{s.apiKey},
+		"User-Agent":  []string{s.userAgent},
 	}
 
 	client := http.Client{
@@ -76,7 +72,7 @@ func (s *SpotAssetsRequest) Process(ctx context.Context) (*SpotAssetsResponse, e
 		return nil, fmt.Errorf("error on copy body to buffer: %w", err)
 	}
 
-	var result SpotAssetsResponse
+	var result SwapBalanceResponse
 	if err := json.Unmarshal(buffer.Bytes(), &result); err != nil {
 		return nil, fmt.Errorf("error on unmarshal response: %w", err)
 	}
@@ -85,24 +81,29 @@ func (s *SpotAssetsRequest) Process(ctx context.Context) (*SpotAssetsResponse, e
 }
 
 // SetUserAgent - used for setup user agent of http request.
-func (s *SpotAssetsRequest) SetUserAgent(userAgent string) *SpotAssetsRequest {
+func (s *SwapBalanceRequest) SetUserAgent(userAgent string) *SwapBalanceRequest {
 	s.userAgent = userAgent
 
 	return s
 }
 
-// SpotAssetsResponse - used as message from api.
+// SwapBalanceResponse - use as response from api.
 //
 //nolint:tagliatelle
-type SpotAssetsResponse struct {
-	Code     int    `json:"code"`
-	Msg      string `json:"msg"`
-	DebugMsg string `json:"debugMsg"`
-	Data     struct {
-		Balances []struct {
-			Asset  string `json:"asset"`
-			Free   string `json:"free"`
-			Locked string `json:"locked"`
-		} `json:"balances"`
+type SwapBalanceResponse struct {
+	Code int    `json:"code"`
+	Msg  string `json:"msg"`
+	Data struct {
+		Balance struct {
+			UserID           string `json:"userId"`
+			Asset            string `json:"asset"`
+			Balance          string `json:"balance"`
+			Equity           string `json:"equity"`
+			UnrealizedProfit string `json:"unrealizedProfit"`
+			RealisedProfit   string `json:"realisedProfit"`
+			AvailableMargin  string `json:"availableMargin"`
+			UsedMargin       string `json:"usedMargin"`
+			FreezedMargin    string `json:"freezedMargin"`
+		} `json:"balance"`
 	} `json:"data"`
 }

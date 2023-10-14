@@ -1,4 +1,4 @@
-package bingx
+package v1
 
 import (
 	"bytes"

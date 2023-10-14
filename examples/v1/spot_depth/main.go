@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	api "github.com/yvv4git/api-go-bingx"
+	api "github.com/yvv4git/api-go-bingx/v1"
 )
 
 const (
@@ -16,7 +16,7 @@ const (
 
 func main() {
 	/*
-		Show my balance.
+		Show the depth of the stack.
 	*/
 	getEnvOrPanic := func(key string) string {
 		value, ok := os.LookupEnv(key)
@@ -31,11 +31,22 @@ func main() {
 	apiKey := getEnvOrPanic(envKey)
 	apiSecret := getEnvOrPanic(envSecret)
 
-	swapBalanceRequest := api.NewSwapBalanceRequest(apiURL, apiKey, apiSecret)
-	resp, err := swapBalanceRequest.Process(context.Background())
+	spotDepthRequest := api.NewSpotDepthRequest(apiURL, apiKey, apiSecret)
+	spotDepthRequest.SetSymbol("BTC-USDT")
+	spotDepthRequest.SetLimit(10)
+
+	response, err := spotDepthRequest.Process(context.Background())
 	if err != nil {
 		log.Fatalf("error on process request: %v", err)
 	}
 
-	log.Printf("%#v", resp)
+	for _, value := range response.Data.Bids {
+		log.Printf("Bid: %v - %v", value[0], value[1])
+	}
+
+	log.Println("-----")
+
+	for _, value := range response.Data.Asks {
+		log.Printf("Ask: %v - %v", value[0], value[1])
+	}
 }

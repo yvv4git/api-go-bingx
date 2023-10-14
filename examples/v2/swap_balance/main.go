@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	api "github.com/yvv4git/api-go-bingx"
+	api "github.com/yvv4git/api-go-bingx/v2"
 )
 
 const (
@@ -16,8 +16,7 @@ const (
 
 func main() {
 	/*
-		Show my assets.
-		Asserts are a set of characters and their number.
+		Show my balance.
 	*/
 	getEnvOrPanic := func(key string) string {
 		value, ok := os.LookupEnv(key)
@@ -32,13 +31,11 @@ func main() {
 	apiKey := getEnvOrPanic(envKey)
 	apiSecret := getEnvOrPanic(envSecret)
 
-	spotAssetsRequest := api.NewSpotAssetsRequest(apiURL, apiKey, apiSecret)
-	response, err := spotAssetsRequest.Process(context.Background())
+	swapBalanceRequest := api.NewSwapBalanceRequest(apiURL, apiKey, apiSecret)
+	resp, err := swapBalanceRequest.Process(context.Background())
 	if err != nil {
 		log.Fatalf("error on process request: %v", err)
 	}
 
-	for _, balance := range response.Data.Balances {
-		log.Printf("[%s] %v", balance.Asset, balance.Free)
-	}
+	log.Printf("%#v", resp)
 }
